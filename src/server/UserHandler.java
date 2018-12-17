@@ -1,4 +1,4 @@
-package project_OOP;
+package server;
 
 import java.awt.Image;
 import java.io.IOException;

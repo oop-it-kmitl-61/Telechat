@@ -1,4 +1,4 @@
-package project_OOP;
+package client;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -1,4 +1,4 @@
-package project_OOP;
+package server;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
