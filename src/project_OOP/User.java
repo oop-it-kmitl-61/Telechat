@@ -16,12 +16,6 @@ public class User {
 	  private String name;
 	  private Socket client;
 	  private String color;
-	  private Socket socketImg;
-	  private InputStream streamInImg;
-	  private OutputStream streamOutImg;
-	  
-
-	  // constructor
 	  public User(Socket client, String name) throws IOException {
 	    this.streamOut = new PrintStream(client.getOutputStream());
 	    this.streamIn = client.getInputStream();
@@ -31,17 +25,14 @@ public class User {
 	    this.color = ColorInt.getColor(this.userId);
 	    amountUser += 1;
 	  }
-
-
-
-	// change color user
+	// Change color user
 	  public void changeColor(String hexColor){
-	    // check if it's a valid hexColor
+	    // Check if it's a valid hexColor
 	    Pattern colorPattern = Pattern.compile("#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})");
 	    Matcher m = colorPattern.matcher(hexColor);
 	    if (m.matches()){
 	      Color c = Color.decode(hexColor);
-	      // if the Color is too Bright don't change
+	      // If the Color is too Bright don't change
 	      double luma = 0.2126 * c.getRed() + 0.7152 * c.getGreen() + 0.0722 * c.getBlue(); // per ITU-R BT.709
 	      if (luma > 160) {
 	        this.getOutStream().println("<b>Color Too Bright</b>");
@@ -53,28 +44,20 @@ public class User {
 	    }
 	    this.getOutStream().println("<b>Failed to change color</b>");
 	  }
-
-	  
-	  //Getter
+	  //Getter method
 	  public PrintStream getOutStream(){
 	    return this.streamOut;
 	  }
-
 	  public InputStream getInputStream(){
 	    return this.streamIn;
 	  }
-
 	  public String getName(){
 	    return this.name;
 	  }
-
-
-	  // print user with his color
+	  // Print user with his color
 	  public String toString(){
-
 	    return "<u><span style='color:"+ this.color
 	      +"'>" + this.getName() + "</span></u>";
-
 	  }
 	}
 class ColorInt {
@@ -92,7 +75,6 @@ class ColorInt {
             "#d64d4d", // red
             "#4d7358", // green
     };
-
     public static String getColor(int i) {
         return mColors[i % mColors.length];
     }

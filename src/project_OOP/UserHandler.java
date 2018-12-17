@@ -9,27 +9,20 @@ import javax.swing.ImageIcon;
 import java.util.Scanner;
 
 class UserHandler implements Runnable {
-
   private Server server;
   private User user;
   private String mode = "Mode -> <span style='color:#447728'>Global</span>";
-
   public UserHandler(Server server, User user) {
     this.server = server;
     this.user = user;
     this.server.broadcastAllUsers();
   }
-
   public void run() {
     String message;
-
-   
     Scanner scn = new Scanner(this.user.getInputStream());
     while (scn.hasNextLine()) {
       message = scn.nextLine();
-
-      // smiley
-      
+      // Emoji message  
       message = message.replace(":)", "<img src='http://4.bp.blogspot.com/-ZgtYQpXq0Yo/UZEDl_PJLhI/AAAAAAAADnk/2pgkDG-nlGs/s1600/facebook-smiley-face-for-comments.png'>");
       message = message.replace(":D", "<img src='http://2.bp.blogspot.com/-OsnLCK0vg6Y/UZD8pZha0NI/AAAAAAAADnY/sViYKsYof-w/s1600/big-smile-emoticon-for-facebook.png'>");
       message = message.replace(":d", "<img src='http://2.bp.blogspot.com/-OsnLCK0vg6Y/UZD8pZha0NI/AAAAAAAADnY/sViYKsYof-w/s1600/big-smile-emoticon-for-facebook.png'>");
@@ -56,7 +49,7 @@ class UserHandler implements Runnable {
       message = message.replace("no", "<img src=\"https://4.bp.blogspot.com/-vjkjQVpUuQU/Ua2DOPz6LbI/AAAAAAAAKOg/r8NesDrJ1gg/s1600/graphic3d-china-pig_08.gif\" width=\"60\" height=\"60\">");
       message.toLowerCase();
 
-      
+      //Check private mode
      if (message.charAt(0) == '@'){
     	 this.mode = "Mode -> <span style='color:#a51313;'>Private</span>";
     	 if(message.contains("mode")) {
@@ -72,7 +65,9 @@ class UserHandler implements Runnable {
           String userPrivate = message.substring(1, firstSpace);
           server.sendMessageToUser(message.substring(firstSpace+1, message.length()), user, userPrivate);
         }
-      }else if (message.charAt(0) == '#'){
+      }
+     //Check color
+     else if (message.charAt(0) == '#'){
         user.changeColor(message);
         // update color for all other users
         this.server.broadcastAllUsers();
@@ -87,11 +82,11 @@ class UserHandler implements Runnable {
     	  server.serverMessageToUser(this.mode, user);
       }
       else{
-        // update user list
+        // Update user list
         server.broadcastMessages(message, user);
       }
     }
-    // end of Thread
+    // End of Thread
     server.removeUser(user);
     this.server.broadcastAllUsers();
     scn.close();

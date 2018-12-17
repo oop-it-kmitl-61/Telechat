@@ -46,28 +46,21 @@ public void init() {
     this.serverName = "localhost";
     this.PORT = 12345;
     this.name = "nickname";
-
     String fontfamily = "Arial, sans-serif";
     font = new Font(fontfamily, Font.PLAIN, 15);
-
     jfr = new JFrame("TeleChat");
     jfr.getContentPane().setLayout(null);
     jfr.setSize(700, 500);
     jfr.setResizable(false);
     jfr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    // Module du fil de discussion
     jtextFilDiscu.setBounds(25, 25, 490, 320);
     jtextFilDiscu.setFont(font);
     jtextFilDiscu.setMargin(new Insets(6, 6, 6, 6));
     jtextFilDiscu.setEditable(false);
     JScrollPane jtextFilDiscuSP = new JScrollPane(jtextFilDiscu);
     jtextFilDiscuSP.setBounds(25, 25, 490, 320);
-
     jtextFilDiscu.setContentType("text/html");
     jtextFilDiscu.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-
-    
     jtextListUsers.setBounds(520, 25, 156, 320);
     jtextListUsers.setEditable(true);
     jtextListUsers.setFont(font);
@@ -75,27 +68,19 @@ public void init() {
     jtextListUsers.setEditable(false);
     JScrollPane jsplistuser = new JScrollPane(jtextListUsers);
     jsplistuser.setBounds(520, 25, 156, 320);
-
     jtextListUsers.setContentType("text/html");
     jtextListUsers.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-
     // Field message user input
     jtextInputChat.setBounds(0, 350, 400, 50);
     jtextInputChat.setFont(font);
     jtextInputChat.setMargin(new Insets(6, 6, 6, 6));
     final JScrollPane jtextInputChatSP = new JScrollPane(jtextInputChat);
     jtextInputChatSP.setBounds(25, 350, 650, 50);
-
-    // button send
+    // Send Button
     final JButton jsbtn = new JButton("Send");
     jsbtn.setFont(font);
     jsbtn.setBounds(575, 410, 100, 35);
-   
-    final JButton imgBtn = new JButton("Choose img");
-    imgBtn.setFont(font);
-    imgBtn.setBounds(400, 410, 120, 35);
-    
- // button Disconnect
+    // Disconnect Button
     final JButton jsbtndeco = new JButton("Disconnect");
     jsbtndeco.setFont(font);
     jsbtndeco.setBounds(25, 410, 130, 35);
@@ -121,7 +106,6 @@ public void init() {
         }
       }
     });
-
     // Click on send button
     jsbtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ae) {
@@ -133,21 +117,16 @@ public void init() {
     final JTextField jtfport = new JTextField(Integer.toString(this.PORT));
     final JTextField jtfAddr = new JTextField(this.serverName);
     final JButton jcbtn = new JButton("Connect");
-
-
     jtfName.getDocument().addDocumentListener(new TextListener(jtfName, jtfport, jtfAddr, jcbtn));
     jtfport.getDocument().addDocumentListener(new TextListener(jtfName, jtfport, jtfAddr, jcbtn));
     jtfAddr.getDocument().addDocumentListener(new TextListener(jtfName, jtfport, jtfAddr, jcbtn));
-
     jcbtn.setFont(font);
     jtfAddr.setBounds(25, 380, 135, 40);
     jtfName.setBounds(375, 380, 135, 40);
     jtfport.setBounds(200, 380, 135, 40);
     jcbtn.setBounds(575, 380, 100, 40);
-
     jtextFilDiscu.setBackground(Color.LIGHT_GRAY);
     jtextListUsers.setBackground(Color.LIGHT_GRAY);
-
     jfr.add(jcbtn);
     jfr.add(jtextFilDiscuSP);
     jfr.add(jsplistuser);
@@ -155,8 +134,6 @@ public void init() {
     jfr.add(jtfport);
     jfr.add(jtfAddr);
     jfr.setVisible(true);
-
-
     appendToPane(jtextFilDiscu, "<h2 style='text-align:center;'>--|| ข้อแนะนำในการใช้ ||--</h2>"
         +"<ul>"
         +"<li style='margin-bottom:5px'>Telechat <b style='color:#a03929;'> มี 2 mode</b> 1.Global (คุยรวม) 2.Private (คุยเดี่ยว)</li>"
@@ -166,7 +143,6 @@ public void init() {
         +"<li style='margin-bottom:5px'>พิมพ์รหัสสี เช่น <b>#d3961b</b> สามารถเปลี่ยนสีชื่อของตัวเองได้</li>"
         +"<li style='margin-bottom:5px'>ขอให้ chat ให้สนุกนะครับ</li>"
         +"</ul><br/>");
-    
     //Connect to server
     jcbtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ae) {
@@ -176,19 +152,14 @@ public void init() {
           String port = jtfport.getText();
           serverName = jtfAddr.getText();
           PORT = Integer.parseInt(port);
-
           appendToPane(jtextFilDiscu, "<span>Connecting to " + serverName + " on port " + PORT + "...</span>");
           server = new Socket(serverName, PORT);
-
           appendToPane(jtextFilDiscu, "<span>Connected to " +
-              server.getRemoteSocketAddress()+"</span>");
-
+          server.getRemoteSocketAddress()+"</span>");
           input = new BufferedReader(new InputStreamReader(server.getInputStream()));
           output = new PrintWriter(server.getOutputStream(), true);
-
           // send nickname to server
           output.println(name);
-
           // create new Read Thread
           read = new Read();
           read.start();
@@ -209,15 +180,12 @@ public void init() {
           JOptionPane.showMessageDialog(jfr, ex.getMessage());
         }
       }
-
     });
-
-    //disconnect
+    //Disconnect event
     jsbtndeco.addActionListener(new ActionListener()  {
       public void actionPerformed(ActionEvent ae) {
     	privc = 0;
     	mynameFlag = false;
-//    	appendToPane(jtextFilDiscu, "<h2>Global mode</h2>");
         jfr.add(jtfName);
         jfr.add(jtfport);
         jfr.add(jtfAddr);
@@ -235,28 +203,23 @@ public void init() {
         output.close();
       }
     });
-
   }
 	public JFrame getJfr() {
 	   return jfr;
  }
-
   // check if all field are not empty
   public class TextListener implements DocumentListener{
     JTextField jtf1;
     JTextField jtf2;
     JTextField jtf3;
     JButton jcbtn;
-
     public TextListener(JTextField jtf1, JTextField jtf2, JTextField jtf3, JButton jcbtn){
       this.jtf1 = jtf1;
       this.jtf2 = jtf2;
       this.jtf3 = jtf3;
       this.jcbtn = jcbtn;
     }
-
     public void changedUpdate(DocumentEvent e) {}
-
     public void removeUpdate(DocumentEvent e) {
       if(jtf1.getText().trim().equals("") ||
           jtf2.getText().trim().equals("") ||
@@ -279,8 +242,7 @@ public void init() {
     }
 
   }
-
-  // send message
+  // Send message method
   public void sendMessage() {
     try {
       String message = jtextInputChat.getText().trim();
@@ -290,8 +252,7 @@ public void init() {
       else if(message.charAt(0) == '@' && !message.substring(1, message.length()).equals(myname)) {
     	  priname = message;
     	  privc = 1;
-    	  appendToPane(jtextFilDiscu, "<h2> --|| Private mode ||-- </h2>");
-    	  
+    	  appendToPane(jtextFilDiscu, "<h2> --|| Private mode ||-- </h2>"); 
     	  jfr.revalidate();
           jfr.repaint();
        }
@@ -300,10 +261,8 @@ public void init() {
     	  privc = 2;
     	  jfr.revalidate();
           jfr.repaint();
-          
       }
       if(privc == 0) {
-
     	  this.oldMsg = message;
           output.println(message);
           jtextInputChat.requestFocus();
@@ -336,15 +295,11 @@ public void init() {
       ex.printStackTrace();
     }
   }
- 
-	  
   public static void main(String[] args) throws Exception {
     ClientGUI client = new ClientGUI();
     client.init();
   }
-
-  
-  // read new incoming messages
+  // Read new incoming messages
   class Read extends Thread {
     public void run() {
       String message;
@@ -355,10 +310,9 @@ public void init() {
           sec = d.get(Calendar.SECOND);
           min = d.get(Calendar.MINUTE);
           hour = d.get(Calendar.HOUR_OF_DAY);
-        	
           message = input.readLine();
           System.out.println(message);
-          //Append user
+          //Append user to JTextPane
          if(message != null){
             if (message.charAt(0) == '[') {
               message = message.substring(1, message.length()-1);
@@ -376,7 +330,7 @@ public void init() {
               }
             }
             else{
-              //Append Message
+              //Append Message To JTextPane
               message =  "<p>" + message + "  " + "<span style='font-size:8px'>" + String.format("%02d:%02d:%02d", hour, min, sec)+ "</span>" + "</p>";
               appendToPane(jtextFilDiscu, message);
             }
@@ -389,8 +343,9 @@ public void init() {
     }
   }
 
-  // send html to pane
+  // Send html to pane
   private void appendToPane(JTextPane tp, String msg){
+	//Setting
     HTMLDocument doc = (HTMLDocument)tp.getDocument();
     HTMLEditorKit editorKit = (HTMLEditorKit)tp.getEditorKit();
     try {
@@ -401,4 +356,3 @@ public void init() {
     }
   }
 }
-

@@ -9,12 +9,10 @@ import java.sql.SQLException;
 import java.util.*;
 
 import javax.imageio.ImageIO;
-
 public class Server {
 	private int port;
 	private ArrayList<User> clients;
 	private ServerSocket server;
-	//Contructor
 	public Server(int port) {
 	    this.port = port;
 	    this.clients = new ArrayList<User>();
@@ -22,7 +20,6 @@ public class Server {
 	public void run() throws IOException {
 	    server = new ServerSocket(port);
 	    System.out.println("Port " + this.port + " is now open.");
-
 	    while (true) {
 	      // accepts a new client
 	      Socket client = server.accept();
@@ -47,32 +44,28 @@ public class Server {
 	          "<img src='https://1.bp.blogspot.com/-H4VsPInWIPU/UNmcZpyNmpI/AAAAAAAAF_c/dODBiiGpeZI/s1600/graphic_pacoo01.GIF' height='42' width='42'></center>"
 	          );
 
-	      // create a new thread for newUser incoming messages handling
+	      // Dreate a new thread for newUser incoming messages handling
 	      Thread t1 = new Thread(new UserHandler(this, newUser));
 	      t1.start();
-
-	      
-	      
 	    }
 	  }
-	// delete a user from the list
+	// Delete a user from the list
 	public void removeUser(User user){
 		  this.clients.remove(user);
 	}
-
-	// send incoming msg to all Users
+	// Send incoming msg to all Users
 	public void broadcastMessages(String msg, User userSender) {
 		 	for (User client : this.clients) {
 		 		client.getOutStream().println("<b>(Global : ) </b>" + userSender.toString() + "<span>: " + msg+ "</span>");
 		    }
 	}
-	// send list of clients to all Users
+	// Send list of clients to all Users
 	public void broadcastAllUsers(){
 		    for (User client : this.clients) {
 		      client.getOutStream().println(this.clients);
 		    }
 	}
-	// send message to a User (String)
+	// Send message between User 
 	public void sendMessageToUser(String msg, User userSender, String receiver){
 		    boolean find = false;
 		    for (User client : this.clients) {
@@ -86,12 +79,10 @@ public class Server {
 		      userSender.getOutStream().println(userSender.toString() + " -> (<b>no one!</b>): " + msg);
 		    }
 		  }
+	//Server send message to user
 	public void serverMessageToUser(String msg, User userSender){
 	        userSender.getOutStream().println(msg);
 	  }
-	
-	
-	
 	public static void main(String[] args) throws IOException {
 		Server s = new Server(12345);
 		s.run();
